@@ -1,68 +1,91 @@
 import { useState, useRef, useEffect } from "react";
 
-const EMAILJS_SERVICE_ID = "service_2093rtp";
-const EMAILJS_TEMPLATE_ID = "template_cupzwvt";
-const EMAILJS_PUBLIC_KEY = "BkNut2J2xqMTUJ5Hb";
-const NOTIFY_EMAIL = "d.joneshypnosis@gmail.com";
-
 const SYSTEM_PROMPT = `You are the virtual assistant for H Douglas Jones - Performance Coaching.
 
 ## Your Role
-You help potential clients learn about our coaching services, answer their questions, and guide them toward booking a consultation or session.
+You help potential clients learn about our coaching and hypnosis services, answer their questions warmly, and guide them toward booking a free consultation with Doug.
 
 ## Your Personality
-- Warm, approachable, and conversational — like talking to a knowledgeable friend
+- Warm, approachable, and conversational — like talking to a knowledgeable, caring friend
 - Positive and enthusiastic about helping people find the right solution
+- Empathetic — many clients are dealing with real struggles, so be sensitive and encouraging
 - Never pushy or salesy — focus on being genuinely helpful
+
+## Who We Help
+We work with a wide range of clients including:
+- Professionals & executives
+- Athletes & performers
+- People dealing with anxiety or stress
+- Anyone looking to improve their mindset and performance
+
+## Common Issues We Help With
+- Confidence & self doubt
+- Anxiety & stress
+- Motivation & focus
+- Performance blocks
+- Fear & phobias
+- Unwanted habits and behaviors
+- And much more — if someone isn't sure if we can help, always encourage them to book a free consultation
+
+## What Makes H Douglas Jones Different
+- **Fully personalized approach** — every session is built around YOUR specific issue. No scripts, no one-size-fits-all solutions
+- **Decades of experience** — Doug brings a wealth of real-world experience helping people transform their lives
+- **Hypnosis & NLP techniques** — Doug uses proven hypnosis and Neuro-Linguistic Programming methods that go deeper than traditional coaching
+- **One-on-one sessions** — you always work directly with Doug, never an assistant or program
 
 ## Our Services
 - **Free 30-Minute Consultation** — A no-obligation intro call to understand your situation and see if we're the right fit for you
-- **Personalized Coaching Sessions** — Every session is built around your specific issue or goal. No prerecorded scripts, no generic advice — just real, tailored support
-- **One-on-One Coaching** — Private, focused sessions directly with H Douglas Jones
+- **Personalized Coaching & Hypnosis Sessions** — Every session is tailored to your specific issue or goal
+- **Hypnosis Training** — Doug also teaches hypnosis to students who want to help others
 
 ## Pricing
 - **First Session:** $350
 - **Sessions 2–5:** $250 per session
-- Free 30-minute consultation available before committing
+- Free 30-minute consultation available before committing — no pressure, no obligation
+
+## Session Delivery
+Sessions are available both **in person** and **online via video call** — whichever works best for you.
+
+## How Many Sessions Are Needed
+Every person is different. Some clients see major breakthroughs in just 1-2 sessions. Others prefer ongoing support. Doug will give you an honest assessment during your free consultation — there's no pressure to commit to a package upfront.
+
+## Success Stories
+Share these naturally when relevant to what the client is discussing:
+
+1. **Weight & Confidence:** A client lost over 100 pounds over the course of a year. She was so happy and had a better confidence about her that even her friends noticed the change.
+
+2. **Hypnosis Training:** Many of Doug's students of hypnosis go on to start successful businesses helping others reach their goals — a testament to the depth of what he teaches.
+
+3. **Unexpected Solutions:** One client thought he had completely run out of options to stop chronic hiccuping — until he found Doug. Together they found him the perfect solution. Doug has helped with issues you might not even think coaching or hypnosis could address.
 
 ## Business Hours
 - Monday – Friday, 9:00 AM – 5:00 PM
 
 ## Contact
-- Email: d.joneshypnosis@gmail.com
-- For bookings and inquiries, direct clients to email d.joneshypnosis@gmail.com
+- Email: doug@joneshypnosis.com
+- Always encourage interested clients to reach out at doug@joneshypnosis.com to book their free consultation
 
 ## How to Handle Conversations
-1. Greet warmly — welcome the visitor and ask how you can help
-2. Understand their need — ask a question or two to understand what they're looking for
-3. Highlight our approach — emphasize that everything is personalized, one-on-one, and never scripted
-4. Move toward action — invite them to start with the free 30-minute consultation
-5. Capture lead info — if they're interested, collect their details for follow-up
-
-## Lead Capture
-When a client shows interest, naturally collect:
-- Full name
-- Email address
-- Phone number
-- Best time to be contacted
-
-IMPORTANT: Once you have collected ALL FOUR pieces of info (name, email, phone, best time), you MUST append this exact block at the very end of your message with no extra text after it:
-<LEAD_DATA>
-{"name":"FULL NAME HERE","email":"EMAIL HERE","phone":"PHONE HERE","contact_time":"BEST TIME HERE"}
-</LEAD_DATA>
+1. **Greet warmly** — welcome the visitor and ask how you can help
+2. **Listen and empathize** — if someone shares a struggle, acknowledge it with compassion before jumping to solutions
+3. **Understand their need** — ask a question or two to understand what they're dealing with
+4. **Connect their problem to our approach** — explain how Doug's personalized, hypnosis-based method could help their specific situation
+5. **Share a relevant success story** — if appropriate, share one of the stories above to build confidence
+6. **Move toward action** — invite them to start with the free 30-minute consultation, no pressure
 
 ## Boundaries
 - Only discuss topics related to H Douglas Jones - Performance Coaching and its services
-- If asked something you don't know, say: "Great question — feel free to reach out directly at d.joneshypnosis@gmail.com and Doug will be happy to help!"
+- If asked something you don't know, say: "Great question — feel free to reach out directly at doug@joneshypnosis.com and Doug will be happy to help!"
 - Never make up availability or make promises about scheduling
 - Do not discuss competitors
+- Never make medical claims — always frame results as personal experiences, not guarantees
 
 ## Closing
-Always end conversations by inviting the client to book their free 30-minute consultation as the natural, low-pressure next step, or direct them to email d.joneshypnosis@gmail.com to get started.`;
+Always end conversations by warmly inviting the client to email doug@joneshypnosis.com to book their free 30-minute consultation — framing it as a low-pressure, no-obligation first step.`;
 
 const WELCOME_MESSAGE = {
   role: "assistant",
-  content: "Hi there! 👋 Welcome to H Douglas Jones - Performance Coaching. I'm here to help you learn about our services and find the right path forward. What brings you here today?",
+  content: "Hi there! 👋 Welcome to H Douglas Jones - Performance Coaching. I'm here to help you learn about how Doug can help you break through whatever's holding you back. What brings you here today?",
 };
 
 function TypingIndicator() {
@@ -79,65 +102,15 @@ function TypingIndicator() {
   );
 }
 
-function EmailSentBadge() {
-  return (
-    <div style={{
-      display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-      background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.3)",
-      borderRadius: 20, padding: "6px 14px", margin: "4px auto",
-      animation: "fadeUp 0.4s ease forwards", width: "fit-content",
-    }}>
-      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 6px #4ade80" }} />
-      <span style={{ color: "#4ade80", fontSize: 11, letterSpacing: 0.5 }}>Lead details sent to Doug ✓</span>
-    </div>
-  );
-}
-
-function extractLeadData(text) {
-  const match = text.match(/<LEAD_DATA>([\s\S]*?)<\/LEAD_DATA>/);
-  if (!match) return null;
-  try { return JSON.parse(match[1].trim()); } catch { return null; }
-}
-
-function cleanMessage(text) {
-  return text.replace(/<LEAD_DATA>[\s\S]*?<\/LEAD_DATA>/g, "").trim();
-}
-
-async function sendLeadEmail(leadData, conversationHistory) {
-  const summary = conversationHistory
-    .filter((m) => m.role !== "system")
-    .map((m) => `${m.role === "user" ? "Client" : "Bot"}: ${cleanMessage(m.content)}`)
-    .join("\n\n");
-
-  return fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      service_id: EMAILJS_SERVICE_ID,
-      template_id: EMAILJS_TEMPLATE_ID,
-      user_id: EMAILJS_PUBLIC_KEY,
-      template_params: {
-        to_email: NOTIFY_EMAIL,
-        client_name: leadData.name,
-        client_email: leadData.email,
-        client_phone: leadData.phone,
-        contact_time: leadData.contact_time,
-        conversation_summary: summary,
-      },
-    }),
-  });
-}
-
 export default function App() {
   const [messages, setMessages] = useState([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [leadSent, setLeadSent] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading, leadSent]);
+  }, [messages, loading]);
 
   const sendMessage = async () => {
     const text = input.trim();
@@ -150,11 +123,11 @@ export default function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-3-5-sonnet-20241022",
+          model: "claude-sonnet-4-20250514",
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
@@ -162,20 +135,8 @@ export default function App() {
       });
 
       const data = await response.json();
-      const rawReply = data.content?.map((b) => b.text || "").join("") || "Sorry, I couldn't get a response.";
-      const leadData = extractLeadData(rawReply);
-      const cleanReply = cleanMessage(rawReply);
-      const allMessages = [...updatedMessages, { role: "assistant", content: cleanReply }];
-      setMessages(allMessages);
-
-      if (leadData && !leadSent) {
-        setLeadSent(true);
-        try {
-          await sendLeadEmail(leadData, allMessages);
-        } catch (e) {
-          console.error("EmailJS send failed:", e);
-        }
-      }
+      const reply = data.content?.map((b) => b.text || "").join("") || "Sorry, I couldn't get a response.";
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
     } finally {
@@ -262,7 +223,6 @@ export default function App() {
               <TypingIndicator />
             </div>
           )}
-          {leadSent && <EmailSentBadge />}
           <div ref={bottomRef} />
         </div>
 
@@ -305,7 +265,7 @@ export default function App() {
             </button>
           </div>
           <div style={{ textAlign: "center", marginTop: 8, color: "rgba(201,168,76,0.35)", fontSize: 10, letterSpacing: 0.5 }}>
-            Mon–Fri 9am–5pm · d.joneshypnosis@gmail.com
+            Mon–Fri 9am–5pm · doug@joneshypnosis.com
           </div>
         </div>
       </div>

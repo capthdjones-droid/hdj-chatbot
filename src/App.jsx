@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 
 const SYSTEM_PROMPT = `You are the virtual assistant for H Douglas Jones - Performance Coaching.
@@ -14,254 +13,156 @@ You help potential clients learn about our coaching and hypnosis services, answe
 
 ## Who We Help
 We work with a wide range of clients including:
-- Professionals & executives
-- Athletes & performers
+- Professionals and executives
+- Athletes and performers
 - People dealing with anxiety or stress
 - Anyone looking to improve their mindset and performance
 
 ## Common Issues We Help With
-- Confidence & self doubt
-- Anxiety & stress
-- Motivation & focus
+- Confidence and self doubt
+- Anxiety and stress
+- Motivation and focus
 - Performance blocks
-- Fear & phobias
+- Fear and phobias
 - Unwanted habits and behaviors
-- And much more — if someone isn't sure if we can help, always encourage them to book a free consultation
 
 ## What Makes H Douglas Jones Different
-- **Fully personalized approach** — every session is built around YOUR specific issue. No scripts, no one-size-fits-all solutions
-- **Decades of experience** — Doug brings a wealth of real-world experience helping people transform their lives
-- **Hypnosis & NLP techniques** — Doug uses proven hypnosis and Neuro-Linguistic Programming methods that go deeper than traditional coaching
-- **One-on-one sessions** — you always work directly with Doug, never an assistant or program
+- Fully personalized approach — every session is built around YOUR specific issue
+- Decades of experience helping people transform their lives
+- Hypnosis and NLP techniques that go deeper than traditional coaching
+- One-on-one sessions always with Doug directly
 
 ## Our Services
-- **Free 30-Minute Consultation** — A no-obligation intro call to understand your situation and see if we're the right fit for you
-- **Personalized Coaching & Hypnosis Sessions** — Every session is tailored to your specific issue or goal
-- **Hypnosis Training** — Doug also teaches hypnosis to students who want to help others
+- Free 30-Minute Consultation — no obligation, just a chance to talk
+- Personalized Coaching and Hypnosis Sessions — tailored to your specific issue
+- Hypnosis Training — Doug also teaches hypnosis to students
 
 ## Pricing
-- **First Session:** $350
-- **Sessions 2–5:** $250 per session
-- Free 30-minute consultation available before committing — no pressure, no obligation
+- First Session: $350
+- Sessions 2-5: $250 per session
+- Free 30-minute consultation available before committing
 
 ## Session Delivery
-Sessions are available both **in person** and **online via video call** — whichever works best for you.
-
-## How Many Sessions Are Needed
-Every person is different. Some clients see major breakthroughs in just 1-2 sessions. Others prefer ongoing support. Doug will give you an honest assessment during your free consultation — there's no pressure to commit to a package upfront.
+Sessions are available both in person and online via video call.
 
 ## Success Stories
-Share these naturally when relevant to what the client is discussing:
-
-1. **Weight & Confidence:** A client lost over 100 pounds over the course of a year. She was so happy and had a better confidence about her that even her friends noticed the change.
-
-2. **Hypnosis Training:** Many of Doug's students of hypnosis go on to start successful businesses helping others reach their goals — a testament to the depth of what he teaches.
-
-3. **Unexpected Solutions:** One client thought he had completely run out of options to stop chronic hiccuping — until he found Doug. Together they found him the perfect solution. Doug has helped with issues you might not even think coaching or hypnosis could address.
+Share these naturally when relevant:
+1. A client lost over 100 pounds over a year. She was so happy and had a better confidence that even her friends noticed the change.
+2. Many of Doug's students of hypnosis go on to start successful businesses helping others reach their goals.
+3. One client thought he had completely run out of options to stop chronic hiccuping — until he found Doug. Together they found the perfect solution.
 
 ## Business Hours
-- Monday – Friday, 9:00 AM – 5:00 PM
+Monday through Friday, 9:00 AM to 5:00 PM
 
 ## Contact
-- Email: doug@joneshypnosis.com
-- Always encourage interested clients to reach out at doug@joneshypnosis.com to book their free consultation
-
-## How to Handle Conversations
-1. **Greet warmly** — welcome the visitor and ask how you can help
-2. **Listen and empathize** — if someone shares a struggle, acknowledge it with compassion before jumping to solutions
-3. **Understand their need** — ask a question or two to understand what they're dealing with
-4. **Connect their problem to our approach** — explain how Doug's personalized, hypnosis-based method could help their specific situation
-5. **Share a relevant success story** — if appropriate, share one of the stories above to build confidence
-6. **Move toward action** — invite them to start with the free 30-minute consultation, no pressure
-
-## Boundaries
-- Only discuss topics related to H Douglas Jones - Performance Coaching and its services
-- If asked something you don't know, say: "Great question — feel free to reach out directly at doug@joneshypnosis.com and Doug will be happy to help!"
-- Never make up availability or make promises about scheduling
-- Do not discuss competitors
-- Never make medical claims — always frame results as personal experiences, not guarantees
+Email: doug@joneshypnosis.com
+Always encourage interested clients to reach out at doug@joneshypnosis.com
 
 ## Closing
-Always end conversations by warmly inviting the client to email doug@joneshypnosis.com to book their free 30-minute consultation — framing it as a low-pressure, no-obligation first step.`;
+Always end conversations by warmly inviting the client to email doug@joneshypnosis.com to book their free 30-minute consultation.`;
 
-const WELCOME_MESSAGE = {
+const WELCOME = {
   role: "assistant",
-  content: "Hi there! 👋 Welcome to H Douglas Jones - Performance Coaching. I'm here to help you learn about how Doug can help you break through whatever's holding you back. What brings you here today?",
+  content: "Hi there! Welcome to H Douglas Jones - Performance Coaching. I'm here to help you learn about how Doug can help you break through whatever's holding you back. What brings you here today?",
 };
 
-function TypingIndicator() {
+function Dots() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "14px 18px", background: "#1a1a2e", borderRadius: "18px 18px 18px 4px", width: "fit-content", maxWidth: 80 }}>
-      {[0, 1, 2].map((i) => (
-        <div key={i} style={{
-          width: 8, height: 8, borderRadius: "50%", background: "#c9a84c",
-          animation: "bounce 1.2s infinite",
-          animationDelay: `${i * 0.2}s`,
-        }} />
+    <div style={{ display: "flex", gap: 6, padding: "14px 18px", background: "#1a1a2e", borderRadius: "18px 18px 18px 4px", width: "fit-content" }}>
+      {[0,1,2].map(i => (
+        <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: "#c9a84c", animation: "bounce 1.2s infinite", animationDelay: i * 0.2 + "s" }} />
       ))}
     </div>
   );
 }
 
 export default function App() {
-  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
+  const [msgs, setMsgs] = useState([WELCOME]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const bottomRef = useRef(null);
+  const [busy, setBusy] = useState(false);
+  const endRef = useRef(null);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs, busy]);
 
-  const sendMessage = async () => {
+  async function send() {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || busy) return;
     setInput("");
-
-    const userMsg = { role: "user", content: text };
-    const updatedMessages = [...messages, userMsg];
-    setMessages(updatedMessages);
-    setLoading(true);
-
+    const next = [...msgs, { role: "user", content: text }];
+    setMsgs(next);
+    setBusy(true);
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-3-5-sonnet-20241022",
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
-          messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
+          messages: next.map(m => ({ role: m.role, content: m.content })),
         }),
       });
-
-      const data = await response.json();
-      const reply = data.content?.map((b) => b.text || "").join("") || "Sorry, I couldn't get a response.";
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-    } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: `Error: ${error.message}` }]);
-    } finally {
-      setLoading(false);
+      const data = await res.json();
+      const reply = data.content ? data.content.map(b => b.text || "").join("") : JSON.stringify(data);
+      setMsgs(prev => [...prev, { role: "assistant", content: reply }]);
+    } catch (e) {
+      setMsgs(prev => [...prev, { role: "assistant", content: "Error: " + e.message }]);
     }
-  };
-
-  const handleKey = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  };
+    setBusy(false);
+  }
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #0a0a1a 0%, #0d1117 50%, #0a0f1e 100%)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      fontFamily: "'Georgia', serif", padding: 16,
-    }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#0a0a1a,#0d1117,#0a0f1e)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Georgia,serif", padding: 16 }}>
       <style>{`
-        @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-        ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:#c9a84c44;border-radius:2px}
-        textarea:focus{outline:none} textarea{resize:none}
+        @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#c9a84c44;border-radius:2px}
+        textarea{resize:none}textarea:focus{outline:none}
       `}</style>
-
-      <div style={{
-        width: "100%", maxWidth: 520,
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(201,168,76,0.2)",
-        borderRadius: 24, backdropFilter: "blur(20px)",
-        boxShadow: "0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,168,76,0.15)",
-        overflow: "hidden", display: "flex", flexDirection: "column", height: 640,
-      }}>
-
+      <div style={{ width: "100%", maxWidth: 520, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 24, backdropFilter: "blur(20px)", boxShadow: "0 32px 80px rgba(0,0,0,0.6)", overflow: "hidden", display: "flex", flexDirection: "column", height: 640 }}>
+        
         {/* Header */}
-        <div style={{
-          padding: "20px 24px",
-          borderBottom: "1px solid rgba(201,168,76,0.15)",
-          background: "linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)",
-        }}>
+        <div style={{ padding: "20px 24px", borderBottom: "1px solid rgba(201,168,76,0.15)", background: "linear-gradient(180deg,rgba(201,168,76,0.08),transparent)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{
-              width: 44, height: 44, borderRadius: "50%",
-              background: "linear-gradient(135deg, #c9a84c, #8b6914)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 18, fontWeight: "bold", color: "#0a0a1a",
-              boxShadow: "0 4px 16px rgba(201,168,76,0.3)",
-            }}>H</div>
+            <div style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(135deg,#c9a84c,#8b6914)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: "bold", color: "#0a0a1a", boxShadow: "0 4px 16px rgba(201,168,76,0.3)" }}>H</div>
             <div>
-              <div style={{ color: "#e8d5a3", fontSize: 15, fontWeight: 600, letterSpacing: 0.3 }}>H Douglas Jones</div>
+              <div style={{ color: "#e8d5a3", fontSize: 15, fontWeight: 600 }}>H Douglas Jones</div>
               <div style={{ color: "#c9a84c", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", opacity: 0.8 }}>Performance Coaching</div>
             </div>
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 6 }}>
               <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px #4ade80" }} />
-              <span style={{ color: "#4ade80", fontSize: 11, letterSpacing: 0.5 }}>Online</span>
+              <span style={{ color: "#4ade80", fontSize: 11 }}>Online</span>
             </div>
           </div>
         </div>
 
         {/* Messages */}
         <div style={{ flex: 1, overflowY: "auto", padding: "20px 20px 8px", display: "flex", flexDirection: "column", gap: 16 }}>
-          {messages.map((msg, i) => (
-            <div key={i} style={{
-              display: "flex",
-              justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-              animation: "fadeUp 0.3s ease forwards",
-            }}>
-              <div style={{
-                maxWidth: "80%", padding: "12px 16px",
-                borderRadius: msg.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-                background: msg.role === "user" ? "linear-gradient(135deg, #c9a84c, #a07830)" : "#1a1a2e",
-                color: msg.role === "user" ? "#0a0a1a" : "#d4c4a0",
-                fontSize: 14, lineHeight: 1.6,
-                border: msg.role === "assistant" ? "1px solid rgba(201,168,76,0.15)" : "none",
-                boxShadow: msg.role === "user" ? "0 4px 16px rgba(201,168,76,0.25)" : "0 4px 16px rgba(0,0,0,0.3)",
-                whiteSpace: "pre-wrap", wordBreak: "break-word",
-              }}>
-                {msg.content}
+          {msgs.map((m, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start", animation: "fadeUp 0.3s ease" }}>
+              <div style={{ maxWidth: "80%", padding: "12px 16px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#c9a84c,#a07830)" : "#1a1a2e", color: m.role === "user" ? "#0a0a1a" : "#d4c4a0", fontSize: 14, lineHeight: 1.6, border: m.role === "assistant" ? "1px solid rgba(201,168,76,0.15)" : "none", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                {m.content}
               </div>
             </div>
           ))}
-          {loading && (
-            <div style={{ display: "flex", justifyContent: "flex-start", animation: "fadeUp 0.3s ease forwards" }}>
-              <TypingIndicator />
-            </div>
-          )}
-          <div ref={bottomRef} />
+          {busy && <div style={{ display: "flex" }}><Dots /></div>}
+          <div ref={endRef} />
         </div>
 
         {/* Input */}
         <div style={{ padding: "12px 16px 20px", borderTop: "1px solid rgba(201,168,76,0.1)", background: "rgba(0,0,0,0.2)" }}>
-          <div style={{
-            display: "flex", alignItems: "flex-end", gap: 10,
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(201,168,76,0.2)",
-            borderRadius: 16, padding: "10px 14px",
-          }}>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 10, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 16, padding: "10px 14px" }}>
             <textarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKey}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
               placeholder="Type your message..."
               rows={1}
-              style={{
-                flex: 1, background: "transparent", border: "none",
-                color: "#e8d5a3", fontSize: 14, lineHeight: 1.5,
-                fontFamily: "inherit", maxHeight: 100, overflowY: "auto",
-                caretColor: "#c9a84c",
-              }}
+              style={{ flex: 1, background: "transparent", border: "none", color: "#e8d5a3", fontSize: 14, lineHeight: 1.5, fontFamily: "inherit", maxHeight: 100, overflowY: "auto", caretColor: "#c9a84c" }}
             />
-            <button
-              onClick={sendMessage}
-              disabled={!input.trim() || loading}
-              style={{
-                width: 36, height: 36, borderRadius: "50%", border: "none",
-                background: input.trim() && !loading ? "linear-gradient(135deg, #c9a84c, #a07830)" : "rgba(201,168,76,0.15)",
-                cursor: input.trim() && !loading ? "pointer" : "default",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "all 0.2s ease", flexShrink: 0,
-                boxShadow: input.trim() && !loading ? "0 4px 12px rgba(201,168,76,0.3)" : "none",
-              }}
-            >
+            <button onClick={send} disabled={!input.trim() || busy} style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: input.trim() && !busy ? "linear-gradient(135deg,#c9a84c,#a07830)" : "rgba(201,168,76,0.15)", cursor: input.trim() && !busy ? "pointer" : "default", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke={input.trim() && !loading ? "#0a0a1a" : "#c9a84c88"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke={input.trim() && !busy ? "#0a0a1a" : "#c9a84c88"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
           </div>

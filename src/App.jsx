@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 
 const SYSTEM_PROMPT = `You are the virtual assistant for H Douglas Jones - Performance Coaching.
@@ -123,11 +124,11 @@ export default function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-3-5-sonnet-20241022",
+          model: "claude-sonnet-4-20250514",
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
@@ -138,7 +139,7 @@ export default function App() {
       const reply = data.content?.map((b) => b.text || "").join("") || "Sorry, I couldn't get a response.";
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: `Error: ${error.message}` }]);
     } finally {
       setLoading(false);
     }

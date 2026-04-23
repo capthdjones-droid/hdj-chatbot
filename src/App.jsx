@@ -96,7 +96,7 @@ export default function App() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-3-opus-20240229",
+          model: "claude-opus-4-7",
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: next.map(m => ({ role: m.role, content: m.content })),
